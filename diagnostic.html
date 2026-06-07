@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnostic Express — Sakai</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c1410;--ink2:#3a4a42;--ink3:#7a8a82;
+  --paper:#f6f4ef;--paper2:#edeae3;--paper3:#e2ddd5;
+  --green:#2d6a4f;--green2:#52b788;--green-light:#e8f4ef;
+  --accent:#b5451b;--white:#ffffff;--radius:12px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+nav{padding:20px 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--paper3)}
+.nav-logo{font-family:'Fraunces',serif;font-size:20px;font-weight:600;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-back{font-size:13px;color:var(--ink2);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.nav-back:hover{color:var(--green)}
+.hero{padding:64px 48px 40px;max-width:680px;margin:0 auto;width:100%;text-align:center}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--green);background:var(--green-light);border:1px solid rgba(45,106,79,.2);padding:6px 14px;border-radius:100px;margin-bottom:24px}
+.hero-tag span{width:6px;height:6px;border-radius:50%;background:var(--green2)}
+.hero-title{font-family:'Fraunces',serif;font-size:clamp(32px,5vw,52px);font-weight:300;line-height:1.15;letter-spacing:-.5px;color:var(--ink);margin-bottom:16px}
+.hero-title em{font-style:italic;color:var(--green)}
+.hero-sub{font-size:16px;color:var(--ink2);max-width:480px;margin:0 auto 16px;line-height:1.6}
+.hero-time{font-size:13px;color:var(--ink3);display:flex;align-items:center;justify-content:center;gap:6px}
+.hero-time::before{content:'⏱'}
+.form-wrap{max-width:600px;margin:0 auto;padding:0 48px 80px;width:100%;flex:1}
+.step{display:none;animation:fadeUp .4s ease}
+.step.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.step-num{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.step-question{font-family:'Fraunces',serif;font-size:24px;font-weight:300;color:var(--ink);margin-bottom:8px;line-height:1.3}
+.step-sub{font-size:14px;color:var(--ink2);margin-bottom:28px}
+.options-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+.option{padding:16px 20px;background:var(--white);border:2px solid var(--paper3);border-radius:var(--radius);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:14px;font-size:15px;color:var(--ink)}
+.option:hover{border-color:var(--green2);background:var(--green-light)}
+.option.selected{border-color:var(--green);background:var(--green-light)}
+.option-icon{font-size:20px;flex-shrink:0}
+.option-label{font-weight:500}
+.option-sub{font-size:13px;color:var(--ink2);font-weight:400}
+.field{margin-bottom:16px}
+.field-label{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px;display:block}
+.field-input{width:100%;padding:12px 16px;background:var(--white);border:2px solid var(--paper3);border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:15px;color:var(--ink);outline:none;transition:border-color .2s}
+.field-input:focus{border-color:var(--green)}
+.field-input::placeholder{color:var(--ink3)}
+.btn-next{width:100%;padding:16px;background:var(--green);color:#fff;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-next:hover{background:#256045;transform:translateY(-1px)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-back{background:none;border:none;color:var(--ink2);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;gap:4px;transition:color .2s}
+.btn-back:hover{color:var(--green)}
+.progress-wrap{margin-bottom:40px}
+.progress-steps{display:flex;gap:8px;margin-bottom:8px}
+.progress-step{flex:1;height:3px;background:var(--paper3);border-radius:2px;transition:background .3s}
+.progress-step.done{background:var(--green)}
+.progress-step.active{background:var(--green2)}
+.progress-label{font-size:12px;color:var(--ink3)}
+#success{display:none;text-align:center;padding:40px 0}
+.success-icon{font-size:56px;margin-bottom:20px}
+.success-title{font-family:'Fraunces',serif;font-size:32px;font-weight:300;color:var(--ink);margin-bottom:12px}
+.success-title em{font-style:italic;color:var(--green)}
+.success-sub{font-size:16px;color:var(--ink2);max-width:400px;margin:0 auto 32px;line-height:1.7}
+.success-card{background:var(--green-light);border:1px solid rgba(45,106,79,.2);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;text-align:left}
+.success-card-title{font-size:13px;font-weight:600;color:var(--green);margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase}
+.success-card-item{font-size:14px;color:var(--ink);margin-bottom:6px;display:flex;gap:8px}
+.success-card-item::before{content:'→';color:var(--green2)}
+@media(max-width:640px){nav{padding:16px 20px}.hero{padding:40px 20px 24px}.form-wrap{padding:0 20px 60px}.hero-title{font-size:28px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">SAK<span>AI</span></div>
+  <a href="/" class="nav-back">← Retour au site</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag"><span></span>Diagnostic express</div>
+  <h1 class="hero-title">3 minutes pour savoir combien<br>votre cabinet <em>peut récupérer</em></h1>
+  <p class="hero-sub">Répondez à 4 questions. Nous vous envoyons une analyse personnalisée sous 24h.</p>
+  <div class="hero-time">Durée estimée : 2 à 3 minutes</div>
+</div>
+
+<div class="form-wrap">
+  <div class="progress-wrap">
+    <div class="progress-steps">
+      <div class="progress-step active" id="ps-1"></div>
+      <div class="progress-step" id="ps-2"></div>
+      <div class="progress-step" id="ps-3"></div>
+      <div class="progress-step" id="ps-4"></div>
+    </div>
+    <div class="progress-label" id="progress-label">Étape 1 sur 4</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step active" id="step-1">
+    <div class="step-num">Question 1 / 4</div>
+    <div class="step-question">Combien de rendez-vous votre cabinet gère-t-il par semaine ?</div>
+    <div class="step-sub">Cela nous aide à estimer le volume de créneaux à risque.</div>
+    <div class="options-grid">
+      <div class="option" onclick="selectOption(1,'moins_50',this)">
+        <div class="option-icon">🦷</div>
+        <div><div class="option-label">Moins de 50 RDV</div><div class="option-sub">Cabinet individuel, praticien seul</div></div>
+      </div>
+      <div class="option" onclick="selectOption(1,'50_100',this)">
+        <div class="option-icon">🏥</div>
+        <div><div class="option-label">50 à 100 RDV</div><div class="option-sub">Cabinet avec 1-2 praticiens</div></div>
+      </div>
+      <div class="option" onclick="selectOption(1,'100_200',this)">
+        <div class="option-icon">🏢</div>
+        <div><div class="option-label">100 à 200 RDV</div><div class="option-sub">Centre dentaire, plusieurs praticiens</div></div>
+      </div>
+      <div class="option" onclick="selectOption(1,'plus_200',this)">
+        <div class="option-icon">🌟</div>
+        <div><div class="option-label">Plus de 200 RDV</div><div class="option-sub">Grande clinique ou groupe dentaire</div></div>
+      </div>
+    </div>
+    <button class="btn-next" id="next-1" onclick="nextStep(2)" disabled>Continuer →</button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step-2">
+    <button class="btn-back" onclick="prevStep(1)">← Retour</button>
+    <div class="step-num">Question 2 / 4</div>
+    <div class="step-question">Quel est votre principal problème en ce moment ?</div>
+    <div class="step-sub">Sélectionnez celui qui vous coûte le plus de temps ou d'argent.</div>
+    <div class="options-grid">
+      <div class="option" onclick="selectOption(2,'no_show',this)">
+        <div class="option-icon">📅</div>
+        <div><div class="option-label">Rendez-vous non honorés</div><div class="option-sub">Créneaux vides, patients absents sans prévenir</div></div>
+      </div>
+      <div class="option" onclick="selectOption(2,'devis',this)">
+        <div class="option-icon">📋</div>
+        <div><div class="option-label">Devis non signés</div><div class="option-sub">Implants, orthodontie — patients qui ne reviennent pas</div></div>
+      </div>
+      <div class="option" onclick="selectOption(2,'secretariat',this)">
+        <div class="option-icon">📞</div>
+        <div><div class="option-label">Secrétariat saturé</div><div class="option-sub">Trop d'appels, tâches répétitives, manque de temps</div></div>
+      </div>
+      <div class="option" onclick="selectOption(2,'fidelisation',this)">
+        <div class="option-icon">💚</div>
+        <div><div class="option-label">Fidélisation patients</div><div class="option-sub">Patients qui ne reviennent pas pour les contrôles</div></div>
+      </div>
+    </div>
+    <button class="btn-next" id="next-2" onclick="nextStep(3)" disabled>Continuer →</button>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step-3">
+    <button class="btn-back" onclick="prevStep(2)">← Retour</button>
+    <div class="step-num">Question 3 / 4</div>
+    <div class="step-question">Quel est le meilleur moment pour échanger ?</div>
+    <div class="step-sub">Un appel de 15 minutes suffit pour voir si Sakai peut vous aider.</div>
+    <div class="options-grid">
+      <div class="option" onclick="selectOption(3,'matin',this)">
+        <div class="option-icon">🌅</div>
+        <div><div class="option-label">Le matin avant 9h</div><div class="option-sub">Avant les consultations</div></div>
+      </div>
+      <div class="option" onclick="selectOption(3,'midi',this)">
+        <div class="option-icon">☀️</div>
+        <div><div class="option-label">La pause déjeuner</div><div class="option-sub">Entre 12h et 14h</div></div>
+      </div>
+      <div class="option" onclick="selectOption(3,'soir',this)">
+        <div class="option-icon">🌆</div>
+        <div><div class="option-label">En fin de journée</div><div class="option-sub">Après 18h</div></div>
+      </div>
+      <div class="option" onclick="selectOption(3,'email',this)">
+        <div class="option-icon">✉️</div>
+        <div><div class="option-label">Par email uniquement</div><div class="option-sub">Je préfère échanger par écrit</div></div>
+      </div>
+    </div>
+    <button class="btn-next" id="next-3" onclick="nextStep(4)" disabled>Continuer →</button>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step-4">
+    <button class="btn-back" onclick="prevStep(3)">← Retour</button>
+    <div class="step-num">Question 4 / 4</div>
+    <div class="step-question">Où vous envoyer votre analyse personnalisée ?</div>
+    <div class="step-sub">Nous vous répondons sous 24h avec une estimation chiffrée de vos revenus récupérables.</div>
+    <div class="field">
+      <label class="field-label">Votre email professionnel *</label>
+      <input type="email" class="field-input" id="input-email" placeholder="dr.martin@cabinet-martin.fr" oninput="checkStep4()">
+    </div>
+    <div class="field">
+      <label class="field-label">Nom du cabinet</label>
+      <input type="text" class="field-input" id="input-cabinet" placeholder="Cabinet Dentaire Martin">
+    </div>
+    <div class="field">
+      <label class="field-label">Téléphone (optionnel)</label>
+      <input type="tel" class="field-input" id="input-tel" placeholder="01 23 45 67 89">
+    </div>
+    <button class="btn-next" id="next-4" onclick="submitDiagnostic()" disabled>
+      Recevoir mon analyse gratuite →
+    </button>
+    <p style="font-size:12px;color:var(--ink3);text-align:center;margin-top:12px">Aucun engagement. Vos données restent confidentielles.</p>
+  </div>
+
+  <!-- SUCCESS -->
+  <div id="success">
+    <div class="success-icon">✅</div>
+    <h2 class="success-title">Votre diagnostic<br>est <em>en cours</em></h2>
+    <p class="success-sub">Nous analysons les informations que vous avez partagées. Vous recevrez votre analyse personnalisée sous 24h.</p>
+    <div class="success-card">
+      <div class="success-card-title">Ce que vous allez recevoir</div>
+      <div class="success-card-item">Estimation des revenus perdus chaque année</div>
+      <div class="success-card-item">Les 2-3 automatisations prioritaires pour votre cabinet</div>
+      <div class="success-card-item">Un ROI estimé avec délai de remboursement</div>
+      <div class="success-card-item">Une proposition sur mesure si pertinent</div>
+    </div>
+    <a href="/" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--green);color:#fff;text-decoration:none;border-radius:100px;font-size:15px;font-weight:500">← Retour au site</a>
+  </div>
+</div>
+
+<script>
+const AT_TOKEN = 'patqsu8RgpVINxga7.f35d4dfed1c3859ad30dcf6623ba79cf8043427f2de092089dead4a89893db45';
+const AT_BASE = 'appalvpSqyauClfpZ';
+const AT_TABLE = 'tblywZlt1LmoTuRdp';
+
+const answers = { rdv_semaine:'', probleme_principal:'', meilleur_moment:'' };
+const ref = new URLSearchParams(window.location.search).get('ref') || '';
+
+// Track open — update Airtable directly
+if (ref) {
+  (async () => {
+    try {
+      // Search by place_id
+      const url = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}?filterByFormula=${encodeURIComponent(`{place_id}='${ref}'`)}&pageSize=1`;
+      const r = await fetch(url, { headers: { Authorization: `Bearer ${AT_TOKEN}` } });
+      const d = await r.json();
+      if (d.records?.length > 0) {
+        const id = d.records[0].id;
+        await fetch(`https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}/${id}`, {
+          method: 'PATCH',
+          headers: { Authorization: `Bearer ${AT_TOKEN}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fields: { ouvert: 'oui', temperature: 'TIEDE' } })
+        });
+      }
+    } catch(e) {}
+  })();
+}
+
+function selectOption(step, value, el) {
+  const key = step===1?'rdv_semaine':step===2?'probleme_principal':'meilleur_moment';
+  answers[key] = value;
+  document.querySelectorAll(`#step-${step} .option`).forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById(`next-${step}`).disabled = false;
+}
+
+function checkStep4() {
+  const email = document.getElementById('input-email').value;
+  document.getElementById('next-4').disabled = !email.includes('@');
+}
+
+function nextStep(n) {
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById(`step-${n}`).classList.add('active');
+  updateProgress(n);
+  window.scrollTo(0,0);
+}
+
+function prevStep(n) {
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById(`step-${n}`).classList.add('active');
+  updateProgress(n);
+  window.scrollTo(0,0);
+}
+
+function updateProgress(current) {
+  for(let i=1;i<=4;i++){
+    const el=document.getElementById(`ps-${i}`);
+    el.className='progress-step'+(i<current?' done':i===current?' active':'');
+  }
+  document.getElementById('progress-label').textContent=`Étape ${current} sur 4`;
+}
+
+async function submitDiagnostic() {
+  const email = document.getElementById('input-email').value.trim();
+  const cabinet = document.getElementById('input-cabinet').value.trim();
+  const tel = document.getElementById('input-tel').value.trim();
+  if (!email) return;
+
+  const btn = document.getElementById('next-4');
+  btn.disabled = true;
+  btn.textContent = '⟳ Envoi en cours...';
+
+  const reponses = JSON.stringify({
+    rdv_semaine: answers.rdv_semaine,
+    probleme_principal: answers.probleme_principal,
+    meilleur_moment: answers.meilleur_moment,
+    email_contact: email,
+    telephone_direct: tel,
+    date_reponse: new Date().toISOString()
+  });
+
+  try {
+    if (ref) {
+      // Find existing record and update it
+      const searchUrl = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}?filterByFormula=${encodeURIComponent(`{place_id}='${ref}'`)}&pageSize=1`;
+      const sr = await fetch(searchUrl, { headers: { Authorization: `Bearer ${AT_TOKEN}` } });
+      const sd = await sr.json();
+
+      if (sd.records?.length > 0) {
+        const id = sd.records[0].id;
+        await fetch(`https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}/${id}`, {
+          method: 'PATCH',
+          headers: { Authorization: `Bearer ${AT_TOKEN}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fields: {
+            diagnostic_reponses: reponses,
+            temperature: 'CHAUD',
+            ouvert: 'oui',
+            email_destinataire: email
+          }})
+        });
+      } else {
+        // Create new record
+        await createNewRecord(cabinet, email, reponses);
+      }
+    } else {
+      // No ref — create new record
+      await createNewRecord(cabinet, email, reponses);
+    }
+  } catch(e) {
+    console.error(e);
+  }
+
+  // Show success
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.querySelector('.progress-wrap').style.display='none';
+  document.getElementById('success').style.display='block';
+  window.scrollTo(0,0);
+}
+
+async function createNewRecord(cabinet, email, reponses) {
+  await fetch(`https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${AT_TOKEN}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: {
+      cabinet: cabinet || 'Diagnostic entrant',
+      diagnostic_reponses: reponses,
+      temperature: 'CHAUD',
+      ouvert: 'oui',
+      email_destinataire: email,
+      statut: 'en_attente_validation',
+      date_generation: new Date().toISOString().slice(0,10),
+      categorie: 'HOT',
+      score_priorite: '8'
+    }})
+  });
+}
+</script>
+</body>
+</html>
