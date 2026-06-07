@@ -55,7 +55,7 @@ section{padding:100px 48px}
 .section-title em{font-style:italic;color:var(--green)}
 .section-sub{font-size:17px;color:var(--ink2);max-width:520px;line-height:1.7}
 .pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:56px;border:2px solid var(--paper3);border-radius:var(--radius-lg);overflow:hidden}
-.pain-card{background:var(--white);padding:36px 40px;position:relative;overflow:hidden;transition:background .25s}
+.pain-card{background:var(--white);padding:0;position:relative;overflow:hidden;transition:background .25s}
 .pain-card:hover{background:var(--green-light)}
 .pain-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--green2);transition:height .3s ease}
 .pain-card:hover::before{height:100%}
@@ -161,7 +161,7 @@ footer{background:var(--ink);padding:40px 48px;display:flex;align-items:center;j
 .hero-stat-label{font-size:12px;color:var(--ink3);margin-top:2px}
 .hero-stat-divider{height:1px;background:var(--paper3);margin:14px 0}
 @media(max-width:900px){.hero-stat-card{display:none}}
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal{opacity:1;transform:translateY(0)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 @media(max-width:900px){
   nav{padding:16px 24px}.nav-links{display:none}
@@ -229,10 +229,10 @@ footer{background:var(--ink);padding:40px 48px;display:flex;align-items:center;j
 </div>
 
 <section id="douleurs">
-  <div class="section-tag reveal">Ce que vous perdez aujourd'hui</div>
-  <h2 class="section-title reveal">Chaque cabinet a les <em>mêmes douleurs.</em><br>Peu les ont résolues.</h2>
-  <p class="section-sub reveal">Ces pertes ne viennent pas d'un manque de compétence. Elles viennent de processus manuels que personne n'a eu le temps d'automatiser.</p>
-  <div class="pain-grid reveal">
+  <div class="section-tag">Ce que vous perdez aujourd'hui</div>
+  <h2 class="section-title">Chaque cabinet a les <em>mêmes douleurs.</em><br>Peu les ont résolues.</h2>
+  <p class="section-sub">Ces pertes ne viennent pas d'un manque de compétence. Elles viennent de processus manuels que personne n'a eu le temps d'automatiser.</p>
+  <div class="pain-grid">
     <div class="pain-card" style="padding:0;overflow:hidden"><div style="height:150px;background:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=600&q=80') center/cover no-repeat"></div><div style="padding:32px 36px"><div class="pain-euro">-80 000 &euro;</div><div class="pain-title">Rendez-vous non honorés</div><div class="pain-desc">Un cabinet à 400k€ de CA avec 20% de no-show perd jusqu'à 80 000 € par an en créneaux vides. Sans rappels automatiques, c'est de l'argent qui part chaque semaine.</div></div>
     <div class="pain-card" style="padding:0;overflow:hidden"><div style="height:150px;background:url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80') center/cover no-repeat"></div><div style="padding:32px 36px"><div class="pain-euro">-60%</div><div class="pain-title">Devis non relancés</div><div class="pain-desc">Un devis d'implantologie à 5 000 € non relancé dans les 48h a 60% de chances d'être signé chez un concurrent. La plupart des cabinets ne relancent jamais.</div></div>
     <div class="pain-card" style="padding:0;overflow:hidden"><div style="height:150px;background:url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80') center/cover no-repeat"></div><div style="padding:32px 36px"><div class="pain-euro">4h/jour</div><div class="pain-title">Secrétariat saturé</div><div class="pain-desc">70% du temps secrétaire est consacré à répondre aux mêmes questions. Des tâches répétitives qui volent du temps à l'accueil et aux cas complexes.</div></div>
@@ -245,16 +245,16 @@ footer{background:var(--ink);padding:40px 48px;display:flex;align-items:center;j
 <div class="diag-section" id="diagnostic">
   <div class="diag-inner">
     <div>
-      <div class="section-tag reveal">Diagnostic express</div>
-      <h2 class="diag-title reveal">Combien perdez-vous<br><em>exactement</em> ?</h2>
-      <p class="diag-sub reveal">En 3 minutes, répondez à 4 questions. Nous calculons vos pertes réelles et vous envoyons une analyse personnalisée sous 24h — gratuitement.</p>
-      <div class="diag-steps reveal">
+      <div class="section-tag">Diagnostic express</div>
+      <h2 class="diag-title">Combien perdez-vous<br><em>exactement</em> ?</h2>
+      <p class="diag-sub">En 3 minutes, répondez à 4 questions. Nous calculons vos pertes réelles et vous envoyons une analyse personnalisée sous 24h — gratuitement.</p>
+      <div class="diag-steps">
         <div class="diag-step"><div class="diag-step-num">1</div><div class="diag-step-text"><strong>4 questions</strong> sur votre cabinet (3 minutes)</div></div>
         <div class="diag-step"><div class="diag-step-num">2</div><div class="diag-step-text"><strong>Analyse personnalisée</strong> envoyée sous 24h</div></div>
         <div class="diag-step"><div class="diag-step-num">3</div><div class="diag-step-text"><strong>Vous décidez</strong> si la suite vous convient</div></div>
       </div>
     </div>
-    <div class="reveal">
+    <div class="">
       <div class="diag-card">
         <div class="diag-badge">⚡ Diagnostic express</div>
         <div class="diag-price">Gratuit</div>
@@ -310,10 +310,10 @@ footer{background:var(--ink);padding:40px 48px;display:flex;align-items:center;j
 </section>
 
 <section id="offres" class="offers-section">
-  <div class="section-tag reveal">Offres Sakai</div>
-  <h2 class="section-title reveal">Trois niveaux.<br><em>Un seul objectif.</em></h2>
-  <p class="section-sub reveal">Chaque déploiement commence par un diagnostic qui chiffre vos revenus perdus. Vous savez exactement ce que vous récupérez avant de signer.</p>
-  <div class="offers-grid reveal">
+  <div class="section-tag">Offres Sakai</div>
+  <h2 class="section-title">Trois niveaux.<br><em>Un seul objectif.</em></h2>
+  <p class="section-sub">Chaque déploiement commence par un diagnostic qui chiffre vos revenus perdus. Vous savez exactement ce que vous récupérez avant de signer.</p>
+  <div class="offers-grid">
     <div class="offer-card">
       <div class="offer-tag">Starter</div>
       <div class="offer-name">Agent Zéro No-Show</div>
@@ -355,7 +355,7 @@ footer{background:var(--ink);padding:40px 48px;display:flex;align-items:center;j
       </ul>
     </div>
   </div>
-  <div style="text-align:center;margin-top:48px" class="reveal">
+  <div style="text-align:center;margin-top:48px" class="">
     <a href="/diagnostic.html" class="btn-primary" style="font-size:16px;padding:16px 36px">Démarrer par un diagnostic gratuit <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
     <p style="margin-top:14px;font-size:13px;color:rgba(255,255,255,.35)">Analyse personnalisée sous 24h — aucun engagement</p>
   </div>
@@ -364,16 +364,16 @@ footer{background:var(--ink);padding:40px 48px;display:flex;align-items:center;j
 <section id="roi" class="roi-section">
   <div class="roi-inner">
     <div>
-      <div class="section-tag reveal">Calculateur ROI</div>
-      <h2 class="section-title reveal">Combien perdez-vous <em>vraiment</em> ?</h2>
-      <p class="section-sub reveal">Ajustez les curseurs avec vos chiffres réels. Le résultat vous dira en combien de semaines Sakai se rembourse.</p>
-      <div style="margin-top:32px;display:flex;flex-direction:column;gap:14px" class="reveal">
+      <div class="section-tag">Calculateur ROI</div>
+      <h2 class="section-title">Combien perdez-vous <em>vraiment</em> ?</h2>
+      <p class="section-sub">Ajustez les curseurs avec vos chiffres réels. Le résultat vous dira en combien de semaines Sakai se rembourse.</p>
+      <div style="margin-top:32px;display:flex;flex-direction:column;gap:14px" class="">
         <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink2)"><div style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px"></div><span>Les cabinets dentaires perdent en moyenne <strong style="color:var(--ink)">17% de leurs créneaux</strong> en no-show.</span></div>
         <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink2)"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);flex-shrink:0;margin-top:6px"></div><span>Un devis non relancé a <strong style="color:var(--ink)">60% de chances</strong> d'être signé chez un concurrent.</span></div>
         <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink2)"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:6px"></div><span>Sakai rembourse son investissement en <strong style="color:var(--ink)">4 à 8 semaines</strong> en moyenne.</span></div>
       </div>
     </div>
-    <div class="roi-calc reveal">
+    <div class="roi-calc">
       <div class="roi-row"><div class="roi-row-label"><span>Chiffre d'affaires annuel</span><strong id="v-ca">400 000 €</strong></div><input type="range" min="100000" max="1500000" step="50000" value="400000" oninput="calcROI()"></div>
       <div class="roi-row"><div class="roi-row-label"><span>Taux de no-show actuel</span><strong id="v-ns">20%</strong></div><input type="range" min="5" max="35" step="1" value="20" oninput="calcROI()"></div>
       <div class="roi-row"><div class="roi-row-label"><span>Devis par mois</span><strong id="v-dv">30</strong></div><input type="range" min="5" max="120" step="5" value="30" oninput="calcROI()"></div>
@@ -388,8 +388,8 @@ footer{background:var(--ink);padding:40px 48px;display:flex;align-items:center;j
 </section>
 
 <section id="processus">
-  <div class="section-tag reveal">Comment ça marche</div>
-  <h2 class="section-title reveal">De zéro à <em>opérationnel</em><br>en 3 semaines.</h2>
+  <div class="section-tag">Comment ça marche</div>
+  <h2 class="section-title">De zéro à <em>opérationnel</em><br>en 3 semaines.</h2>
   <div class="process-list">
     <div class="process-item"><div class="process-num">01</div><div><div class="process-title">Diagnostic express (gratuit)</div><div class="process-desc">3 minutes, 4 questions. Nous calculons vos revenus perdus et vous envoyons une analyse personnalisée sous 24h.</div><span class="process-time">Gratuit — sans engagement</span></div></div>
     <div class="process-item"><div class="process-num">02</div><div><div class="process-title">Configuration sur mesure</div><div class="process-desc">Nous nous connectons à vos outils existants. Aucune installation côté cabinet, aucune formation requise.</div><span class="process-time">5 à 10 jours ouvrés</span></div></div>
